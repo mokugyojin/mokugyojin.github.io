@@ -61,6 +61,7 @@ def generate_live_list_html(lives):
     if not valid_lives:
         return "<p>現在、表示できるライブ情報はありません。</p>"
 
+    for event_date, live in valid_lives:
         title = live.get('title', 'No Title')
         place = live.get('place', '')
         open_start = live.get('open_start', '')
@@ -69,6 +70,8 @@ def generate_live_list_html(lives):
         access = live.get('access', '')
         image = live.get('image', '')
         link = live.get('link', '#')
+        
+        display_date = event_date.strftime('%Y/%m/%d')
 
         # Build image HTML if image exists (smaller size)
         img_html = f'<img src="{image}" alt="{title}" style="max-width: 300px; width: 100%; border-radius: 5px; margin-bottom: 10px;">' if image else ''
