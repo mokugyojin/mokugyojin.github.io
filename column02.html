@@ -110,44 +110,50 @@
 
                 <script>
                     const pageKey = 'comments_' + window.location.pathname.split('/').pop().split('.')[0];
+                    const API_URL = 'https://script.google.com/macros/s/AKfycbwojxq0m1iMBx61_ZIcClBItHEyIIxyW8X8qwx571QKWrRHIfLEbqABmHAqj0IX6x3h/exec';
 
-                    function loadComments() {
+                    async function loadComments() {
                         const container = document.getElementById('comments-container');
-                        let comments = [];
+                        container.innerHTML = '<p style="color: #888; font-size: 0.9em;">読み込み中...</p>';
+
                         try {
-                            comments = JSON.parse(localStorage.getItem(pageKey) || '[]');
-                        } catch (e) { }
+                            const response = await fetch(API_URL + '?pageId=' + pageKey);
+                            const comments = await response.json();
 
-                        container.innerHTML = '';
-                        if (comments.length === 0) {
-                            container.innerHTML = '<p style="color: #888; font-size: 0.9em;">まだコメントはありません。</p>';
-                            return;
+                            container.innerHTML = '';
+                            if (!comments || comments.length === 0) {
+                                container.innerHTML = '<p style="color: #888; font-size: 0.9em;">まだコメントはありません。</p>';
+                                return;
+                            }
+
+                            comments.forEach(c => {
+                                const div = document.createElement('div');
+                                div.style.borderBottom = '1px solid #eee';
+                                div.style.padding = '10px 0';
+
+                                const header = document.createElement('div');
+                                header.innerHTML = `<strong style="font-size: 1em;">${escapeHtml(c.name)}</strong> <span style="font-size: 0.8em; color: #888; margin-left: 10px;">${escapeHtml(c.date)}</span>`;
+
+                                const text = document.createElement('p');
+                                text.style.margin = '5px 0 0 0';
+                                text.style.fontSize = '0.95em';
+                                text.innerHTML = escapeHtml(c.text).replace(/\n/g, '<br>');
+
+                                div.appendChild(header);
+                                div.appendChild(text);
+                                container.appendChild(div);
+                            });
+                        } catch (e) {
+                            container.innerHTML = '<p style="color: #ff0000; font-size: 0.9em;">コメントの読み込みに失敗しました。</p>';
                         }
-
-                        comments.forEach(c => {
-                            const div = document.createElement('div');
-                            div.style.borderBottom = '1px solid #eee';
-                            div.style.padding = '10px 0';
-
-                            const header = document.createElement('div');
-                            header.innerHTML = `<strong style="font-size: 1em;">${escapeHtml(c.name)}</strong> <span style="font-size: 0.8em; color: #888; margin-left: 10px;">${c.date}</span>`;
-
-                            const text = document.createElement('p');
-                            text.style.margin = '5px 0 0 0';
-                            text.style.fontSize = '0.95em';
-                            text.innerHTML = escapeHtml(c.text).replace(/\n/g, '<br>');
-
-                            div.appendChild(header);
-                            div.appendChild(text);
-                            container.appendChild(div);
-                        });
                     }
 
-                    function postComment() {
+                    async function postComment() {
                         const nameInput = document.getElementById('comment-name');
                         const textInput = document.getElementById('comment-text');
                         const passwordInput = document.getElementById('comment-password');
                         const errorMsg = document.getElementById('comment-error');
+                        const submitBtn = document.querySelector('button[onclick="postComment()"]');
 
                         const name = nameInput.value.trim() || '名無し';
                         const text = textInput.value.trim();
@@ -159,32 +165,53 @@
                             return;
                         }
 
-                        if (password !== 'QA63VEUK') {
-                            errorMsg.innerText = '合言葉が間違っています。';
+                        if (!password) {
+                            errorMsg.innerText = '合言葉を入力してください。';
                             errorMsg.style.display = 'block';
                             return;
                         }
 
                         errorMsg.style.display = 'none';
+                        submitBtn.disabled = true;
+                        submitBtn.innerText = '送信中...';
 
-                        let comments = [];
                         try {
-                            comments = JSON.parse(localStorage.getItem(pageKey) || '[]');
-                        } catch (e) { }
+                            const response = await fetch(API_URL, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'text/plain'
+                                },
+                                body: JSON.stringify({
+                                    pageId: pageKey,
+                                    name: name,
+                                    text: text,
+                                    password: password
+                                })
+                            });
 
-                        const date = new Date().toLocaleString('ja-JP');
-                        comments.push({ name, text, date });
-                        localStorage.setItem(pageKey, JSON.stringify(comments));
+                            const result = await response.json();
 
-                        nameInput.value = '';
-                        textInput.value = '';
-                        passwordInput.value = '';
-
-                        loadComments();
+                            if (result.success) {
+                                nameInput.value = '';
+                                textInput.value = '';
+                                passwordInput.value = '';
+                                loadComments();
+                            } else {
+                                errorMsg.innerText = result.message || '投稿に失敗しました。';
+                                errorMsg.style.display = 'block';
+                            }
+                        } catch (e) {
+                            errorMsg.innerText = '通信エラーが発生しました。';
+                            errorMsg.style.display = 'block';
+                        } finally {
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = '投稿する';
+                        }
                     }
 
                     function escapeHtml(str) {
-                        return str.replace(/[&<>'"]/g, tag => ({
+                        if (!str) return '';
+                        return String(str).replace(/[&<>'"]/g, tag => ({
                             '&': '&amp;',
                             '<': '&lt;',
                             '>': '&gt;',
