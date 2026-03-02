@@ -93,6 +93,125 @@
                 <p>原田</p>
 
                 <hr>
+
+                <!-- コメント機能 -->
+                <div style="margin-top: 30px; margin-bottom: 30px;">
+                    <h3>💬 コメント</h3>
+                    <div id="comments-container" style="margin-bottom: 20px;"></div>
+
+                    <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">
+                        <h4 style="margin-top: 0;">コメントを投稿する</h4>
+                        <p style="font-size: 0.9em; color: #555; margin-top: 0;">※投稿には合言葉（パスワード）が必要です。</p>
+                        <div style="margin-bottom: 10px;">
+                            <label style="font-size: 0.9em;">お名前：</label><br>
+                            <input type="text" id="comment-name" style="width: 100%; max-width: 300px; padding: 5px;">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="font-size: 0.9em;">コメント：</label><br>
+                            <textarea id="comment-text" rows="4"
+                                style="width: 100%; box-sizing: border-box; padding: 5px;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-size: 0.9em;">合言葉：</label><br>
+                            <input type="password" id="comment-password"
+                                style="width: 100%; max-width: 150px; padding: 5px;">
+                        </div>
+                        <button onclick="postComment()" style="padding: 8px 15px; cursor: pointer;">投稿する</button>
+                        <p id="comment-error" style="color: red; display: none; margin-top: 10px; font-size: 0.9em;">
+                        </p>
+                    </div>
+                </div>
+
+                <script>
+                    const pageKey = 'comments_' + window.location.pathname.split('/').pop().split('.')[0];
+
+                    function loadComments() {
+                        const container = document.getElementById('comments-container');
+                        let comments = [];
+                        try {
+                            comments = JSON.parse(localStorage.getItem(pageKey) || '[]');
+                        } catch (e) { }
+
+                        container.innerHTML = '';
+                        if (comments.length === 0) {
+                            container.innerHTML = '<p style="color: #888; font-size: 0.9em;">まだコメントはありません。</p>';
+                            return;
+                        }
+
+                        comments.forEach(c => {
+                            const div = document.createElement('div');
+                            div.style.borderBottom = '1px solid #eee';
+                            div.style.padding = '10px 0';
+
+                            const header = document.createElement('div');
+                            header.innerHTML = `<strong style="font-size: 1em;">${escapeHtml(c.name)}</strong> <span style="font-size: 0.8em; color: #888; margin-left: 10px;">${c.date}</span>`;
+
+                            const text = document.createElement('p');
+                            text.style.margin = '5px 0 0 0';
+                            text.style.fontSize = '0.95em';
+                            text.innerHTML = escapeHtml(c.text).replace(/\n/g, '<br>');
+
+                            div.appendChild(header);
+                            div.appendChild(text);
+                            container.appendChild(div);
+                        });
+                    }
+
+                    function postComment() {
+                        const nameInput = document.getElementById('comment-name');
+                        const textInput = document.getElementById('comment-text');
+                        const passwordInput = document.getElementById('comment-password');
+                        const errorMsg = document.getElementById('comment-error');
+
+                        const name = nameInput.value.trim() || '名無し';
+                        const text = textInput.value.trim();
+                        const password = passwordInput.value;
+
+                        if (!text) {
+                            errorMsg.innerText = 'コメントを入力してください。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        if (password !== 'QA63VEUK') {
+                            errorMsg.innerText = '合言葉が間違っています。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        errorMsg.style.display = 'none';
+
+                        let comments = [];
+                        try {
+                            comments = JSON.parse(localStorage.getItem(pageKey) || '[]');
+                        } catch (e) { }
+
+                        const date = new Date().toLocaleString('ja-JP');
+                        comments.push({ name, text, date });
+                        localStorage.setItem(pageKey, JSON.stringify(comments));
+
+                        nameInput.value = '';
+                        textInput.value = '';
+                        passwordInput.value = '';
+
+                        loadComments();
+                    }
+
+                    function escapeHtml(str) {
+                        return str.replace(/[&<>'"]/g, tag => ({
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            "'": '&#39;',
+                            '"': '&quot;'
+                        }[tag] || tag));
+                    }
+
+                    document.addEventListener('DOMContentLoaded', loadComments);
+                </script>
+                <!-- コメント機能 ここまで -->
+
+                <hr>
                 <p align="center"><a href="column.html">目次へ戻る</a> ｜ <a href="index.html">トップへ戻る</a></p>
             </td>
         </tr>
