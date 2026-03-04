@@ -203,7 +203,8 @@
                         const myTokens = getMyTokens();
 
                         try {
-                            const response = await fetch(API_URL + '?pageId=' + pageKey);
+                            // ブラウザのキャッシュを回避するためにタイムスタンプを付与
+                            const response = await fetch(API_URL + '?pageId=' + pageKey + '&t=' + Date.now());
                             const comments = await response.json();
 
                             container.innerHTML = '';
