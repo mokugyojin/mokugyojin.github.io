@@ -124,8 +124,31 @@
                     const GEMINI_API_KEY = 'AIzaSyDNKgM31lBCyKEXgKiqpNfXvnryA6BMe-c';
                     const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_API_KEY;
 
-                    // 簡易的なNGワードリスト（放送禁止用語等）
-                    const NG_WORDS = ['死ね', '殺す', 'クソ', '糞', 'バカ', 'アホ', 'ガイジ', '池沼'];
+                    // NGワードリスト（放送禁止用語・差別用語等）
+                    const NG_WORDS = [
+                        // 暴言・罵倒
+                        '死ね', '殺す', '殺してやる', 'クソ', '糞', 'うざい', 'きもい', 'キモい', 'キモイ',
+                        // 知的障害に関する差別語
+                        'ガイジ', '池沼', '知障', '知恵遅れ', '白痴', '低能', 'ちしょう',
+                        // 身体障害に関する差別語
+                        'かたわ', 'カタワ', 'びっこ', 'めくら', 'つんぼ', 'おし', 'どもり',
+                        'いざり', 'ちんば', 'せむし',
+                        // 精神障害に関する差別語
+                        'キチガイ', 'きちがい', '基地外', '気違い', '精薄',
+                        // 人種・民族差別語
+                        'ニガー', 'ニグロ', '土人',
+                        // 職業差別語
+                        '乞食', 'こじき', 'ルンペン',
+                        // 侮蔑語
+                        'バカ', 'アホ', '間抜け', 'マヌケ', 'ボケ', 'カス', 'ゴミ',
+                        'クズ', 'ブス', 'デブ', 'ハゲ', 'チビ',
+                        // 性的表現
+                        'セックス', 'オナニー', 'ちんこ', 'まんこ', 'おっぱい', 'レイプ', '強姦',
+                        // 反社会的表現
+                        '爆破', 'テロ', '自殺しろ', '首吊り',
+                        // ネットスラング系侮蔑
+                        '氏ね', 'タヒね', '4ね', 'シネ', 'くたばれ', 'ころす'
+                    ];
 
                     // 削除トークンをlocalStorageで管理
                     function getMyTokens() {
@@ -286,9 +309,16 @@
                             return;
                         }
 
-                        // NGワードチェック
+                        // NGワードチェック（名前）
                         if (NG_WORDS.some(word => name.includes(word))) {
                             errorMsg.innerText = 'お名前に不適切な言葉が含まれています。変更してください。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        // NGワードチェック（コメント本文）
+                        if (NG_WORDS.some(word => text.includes(word))) {
+                            errorMsg.innerText = 'コメントに不適切な言葉が含まれています。修正してください。';
                             errorMsg.style.display = 'block';
                             return;
                         }
