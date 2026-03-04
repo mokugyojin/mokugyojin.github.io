@@ -127,6 +127,25 @@
                     // 簡易的なNGワードリスト（放送禁止用語等）
                     const NG_WORDS = ['死ね', '殺す', 'クソ', '糞', 'バカ', 'アホ', 'ガイジ', '池沼'];
 
+                    // 削除トークンをlocalStorageで管理
+                    function getMyTokens() {
+                        try {
+                            return JSON.parse(localStorage.getItem('myCommentTokens') || '[]');
+                        } catch { return []; }
+                    }
+                    function saveToken(token) {
+                        const tokens = getMyTokens();
+                        tokens.push(token);
+                        localStorage.setItem('myCommentTokens', JSON.stringify(tokens));
+                    }
+                    function removeToken(token) {
+                        const tokens = getMyTokens().filter(t => t !== token);
+                        localStorage.setItem('myCommentTokens', JSON.stringify(tokens));
+                    }
+                    function generateToken() {
+                        return Math.random().toString(36).substring(2) + Date.now().toString(36);
+                    }
+
                     async function transformToChiikawa(text) {
                         const prompt = [
                             "あなたはテキストを「ちいかわ」のキャラクター（主にハチワレ）風のセリフに自然に変換するAIです。",
@@ -183,6 +202,7 @@
                     async function loadComments() {
                         const container = document.getElementById('comments-container');
                         container.innerHTML = '<p style="color: #888; font-size: 0.9em;">読み込み中...</p>';
+                        const myTokens = getMyTokens();
 
                         try {
                             const response = await fetch(API_URL + '?pageId=' + pageKey);
@@ -202,6 +222,15 @@
                                 const header = document.createElement('div');
                                 header.innerHTML = `<strong style="font-size: 1em;">${escapeHtml(c.name)}</strong> <span style="font-size: 0.8em; color: #888; margin-left: 10px;">${escapeHtml(c.date)}</span>`;
 
+                                // 自分のコメントなら削除ボタンを表示
+                                if (c.deleteToken && myTokens.includes(c.deleteToken)) {
+                                    const delBtn = document.createElement('button');
+                                    delBtn.innerText = '削除';
+                                    delBtn.style.cssText = 'margin-left: 10px; font-size: 0.75em; padding: 2px 8px; cursor: pointer; color: #c00; border: 1px solid #c00; background: #fff; border-radius: 3px;';
+                                    delBtn.onclick = () => deleteComment(c.row, c.deleteToken);
+                                    header.appendChild(delBtn);
+                                }
+
                                 const text = document.createElement('p');
                                 text.style.margin = '5px 0 0 0';
                                 text.style.fontSize = '0.95em';
@@ -213,6 +242,32 @@
                             });
                         } catch (e) {
                             container.innerHTML = '<p style="color: #ff0000; font-size: 0.9em;">コメントの読み込みに失敗しました。</p>';
+                        }
+                    }
+
+                    async function deleteComment(row, deleteToken) {
+                        if (!confirm('このコメントを削除しますか？')) return;
+
+                        try {
+                            const response = await fetch(API_URL, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'text/plain' },
+                                body: JSON.stringify({
+                                    action: 'delete',
+                                    row: row,
+                                    deleteToken: deleteToken,
+                                    password: 'QA63VEUK'
+                                })
+                            });
+                            const result = await response.json();
+                            if (result.success) {
+                                removeToken(deleteToken);
+                                loadComments();
+                            } else {
+                                alert(result.message || '削除に失敗しました。');
+                            }
+                        } catch (e) {
+                            alert('通信エラーが発生しました。');
                         }
                     }
 
@@ -246,7 +301,10 @@
                             // フロントエンドでGemini APIを呼び出してちいかわ変換
                             const transformedText = await transformToChiikawa(text);
 
-                            // 変換後のテキストをGASに送信（GASはスプレッドシートに保存するだけ）
+                            // 削除用トークンを生成
+                            const deleteToken = generateToken();
+
+                            // 変換後のテキストをGASに送信
                             const response = await fetch(API_URL, {
                                 method: 'POST',
                                 headers: {
@@ -256,6 +314,7 @@
                                     pageId: pageKey,
                                     name: name,
                                     text: transformedText,
+                                    deleteToken: deleteToken,
                                     password: 'QA63VEUK'
                                 })
                             });
@@ -263,6 +322,7 @@
                             const result = await response.json();
 
                             if (result.success) {
+                                saveToken(deleteToken);
                                 nameInput.value = '';
                                 textInput.value = '';
                                 loadComments();
