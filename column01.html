@@ -102,7 +102,7 @@
                     <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">
                         <h4 style="margin-top: 0;">コメントを投稿する</h4>
                         <p style="font-size: 0.9em; color: #555; margin-top: 0;">
-                            ※投稿には合言葉（パスワード）が必要です。合言葉はライブ物販コーナーでこっそり教えます。</p>
+                            ※お名前は自由に設定できます。投稿されたコメントはAIが自動的に「ちいかわ風」に変換してくれます！</p>
                         <div style="margin-bottom: 10px;">
                             <label style="font-size: 0.9em;">お名前：</label><br>
                             <input type="text" id="comment-name" style="width: 100%; max-width: 300px; padding: 5px;">
@@ -111,11 +111,6 @@
                             <label style="font-size: 0.9em;">コメント：</label><br>
                             <textarea id="comment-text" rows="4"
                                 style="width: 100%; box-sizing: border-box; padding: 5px;"></textarea>
-                        </div>
-                        <div style="margin-bottom: 15px;">
-                            <label style="font-size: 0.9em;">合言葉：</label><br>
-                            <input type="password" id="comment-password"
-                                style="width: 100%; max-width: 150px; padding: 5px;">
                         </div>
                         <button onclick="postComment()" style="padding: 8px 15px; cursor: pointer;">投稿する</button>
                         <p id="comment-error" style="color: red; display: none; margin-top: 10px; font-size: 0.9em;">
@@ -126,6 +121,9 @@
                 <script>
                     const pageKey = 'comments_' + window.location.pathname.split('/').pop().split('.')[0];
                     const API_URL = 'https://script.google.com/macros/s/AKfycbwojxq0m1iMBx61_ZIcClBItHEyIIxyW8X8qwx571QKWrRHIfLEbqABmHAqj0IX6x3h/exec';
+
+                    // 簡易的なNGワードリスト（放送禁止用語等）
+                    const NG_WORDS = ['死ね', '殺す', 'クソ', '糞', 'バカ', 'アホ', 'ガイジ', '池沼'];
 
                     async function loadComments() {
                         const container = document.getElementById('comments-container');
@@ -166,13 +164,11 @@
                     async function postComment() {
                         const nameInput = document.getElementById('comment-name');
                         const textInput = document.getElementById('comment-text');
-                        const passwordInput = document.getElementById('comment-password');
                         const errorMsg = document.getElementById('comment-error');
                         const submitBtn = document.querySelector('button[onclick="postComment()"]');
 
                         const name = nameInput.value.trim() || '名無し';
                         const text = textInput.value.trim();
-                        const password = passwordInput.value;
 
                         if (!text) {
                             errorMsg.innerText = 'コメントを入力してください。';
@@ -180,15 +176,16 @@
                             return;
                         }
 
-                        if (!password) {
-                            errorMsg.innerText = '合言葉を入力してください。';
+                        // NGワードチェック
+                        if (NG_WORDS.some(word => name.includes(word))) {
+                            errorMsg.innerText = 'お名前に不適切な言葉が含まれています。変更してください。';
                             errorMsg.style.display = 'block';
                             return;
                         }
 
                         errorMsg.style.display = 'none';
                         submitBtn.disabled = true;
-                        submitBtn.innerText = '送信中...';
+                        submitBtn.innerText = 'AI変換中...';
 
                         try {
                             const response = await fetch(API_URL, {
@@ -199,8 +196,7 @@
                                 body: JSON.stringify({
                                     pageId: pageKey,
                                     name: name,
-                                    text: text,
-                                    password: password
+                                    text: text
                                 })
                             });
 
@@ -209,7 +205,6 @@
                             if (result.success) {
                                 nameInput.value = '';
                                 textInput.value = '';
-                                passwordInput.value = '';
                                 loadComments();
                             } else {
                                 errorMsg.innerText = result.message || '投稿に失敗しました。';
