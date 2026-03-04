@@ -105,7 +105,8 @@
                             ※お名前は自由に設定できます。コメントはちいかわ風に変換されます。</p>
                         <div style="margin-bottom: 10px;">
                             <label style="font-size: 0.9em;">お名前：</label><br>
-                            <input type="text" id="comment-name" style="width: 100%; max-width: 300px; padding: 5px;">
+                            <input type="text" id="comment-name" maxlength="8"
+                                style="width: 100%; max-width: 300px; padding: 5px;">
                         </div>
                         <div style="margin-bottom: 10px;">
                             <label style="font-size: 0.9em;">コメント：</label><br>
@@ -305,6 +306,13 @@
 
                         if (!text) {
                             errorMsg.innerText = 'コメントを入力してください。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        // 名前の文字種チェック（ひらがな・アルファベットのみ）
+                        if (name !== '名無し' && !/^[ぁ-んー a-zA-Z]+$/.test(name)) {
+                            errorMsg.innerText = 'お名前はひらがなまたはアルファベットで入力してください。';
                             errorMsg.style.display = 'block';
                             return;
                         }
