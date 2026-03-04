@@ -86,7 +86,7 @@
                 <script>
                     const pageKey = 'comments_' + window.location.pathname.split('/').pop().split('.')[0];
                     const API_URL = 'https://script.google.com/macros/s/AKfycbxQtt3zOcm8sP8JTlBMGLv5qfRwfMIRDJz-jzhKUCKOFONhOt47t4WY7s3kxcUHGq-7/exec';
-                    const GEMINI_API_KEY = 'AIzaSyCVbgT_oTV3tJ7kC1uoU8apkCIB4QvDSuo';
+                    const GEMINI_API_KEY = 'AIzaSyDNKgM31lBCyKEXgKiqpNfXvnryA6BMe-c';
                     const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_API_KEY;
 
                     // 簡易的なNGワードリスト（放送禁止用語等）
@@ -220,7 +220,8 @@
                                 body: JSON.stringify({
                                     pageId: pageKey,
                                     name: name,
-                                    text: transformedText
+                                    text: transformedText,
+                                    password: 'QA63VEUK'
                                 })
                             });
 
