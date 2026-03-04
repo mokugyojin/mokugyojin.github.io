@@ -121,9 +121,43 @@
                 <script>
                     const pageKey = 'comments_' + window.location.pathname.split('/').pop().split('.')[0];
                     const API_URL = 'https://script.google.com/macros/s/AKfycbxQtt3zOcm8sP8JTlBMGLv5qfRwfMIRDJz-jzhKUCKOFONhOt47t4WY7s3kxcUHGq-7/exec';
+                    const GEMINI_API_KEY = 'AIzaSyCVbgT_oTV3tJ7kC1uoU8apkCIB4QvDSuo';
+                    const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_API_KEY;
 
                     // 簡易的なNGワードリスト（放送禁止用語等）
                     const NG_WORDS = ['死ね', '殺す', 'クソ', '糞', 'バカ', 'アホ', 'ガイジ', '池沼'];
+
+                    async function transformToChiikawa(text) {
+                        const prompt = [
+                            "あなたは入力されたテキストを、極度の「ちいかわ風」のセリフに変換して出力するAIです。",
+                            "以下の全ルールを守り、入力の原型をとどめないレベルで変換してください。",
+                            "1. トーン: 常に怯えている、泣きそう、絶望している、または極度に驚いている。",
+                            "2. 記号: 「……」や「ッ」「！！」を異常なほど多用すること。",
+                            "3. リアクション: 文頭、文中、文末に必ず「ア、アワッ……！！」「ヒッ……！！」「ガタガタ……」「エッ？」「ワァ……ッ」「……コト！？」のいずれかを大量挿入。",
+                            "4. 語彙: 難しい単語や漢字は絶対に使いません。すべて平仮名かカタカナにしてください。",
+                            "出力は変換後のテキストのみです。",
+                            "--- 変換対象テキスト ---",
+                            text
+                        ].join("\n");
+
+                        try {
+                            const res = await fetch(GEMINI_URL, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    contents: [{ parts: [{ text: prompt }] }],
+                                    generationConfig: { temperature: 1.2 }
+                                })
+                            });
+                            const data = await res.json();
+                            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                                return data.candidates[0].content.parts[0].text;
+                            }
+                        } catch (e) {
+                            // 変換失敗時は元テキストを返す
+                        }
+                        return text;
+                    }
 
                     async function loadComments() {
                         const container = document.getElementById('comments-container');
@@ -188,6 +222,10 @@
                         submitBtn.innerText = '投稿中...';
 
                         try {
+                            // フロントエンドでGemini APIを呼び出してちいかわ変換
+                            const transformedText = await transformToChiikawa(text);
+
+                            // 変換後のテキストをGASに送信（GASはスプレッドシートに保存するだけ）
                             const response = await fetch(API_URL, {
                                 method: 'POST',
                                 headers: {
@@ -196,7 +234,7 @@
                                 body: JSON.stringify({
                                     pageId: pageKey,
                                     name: name,
-                                    text: text
+                                    text: transformedText
                                 })
                             });
 
