@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>第4回：セル・スネーク - 週刊東山通信</title>
+    <style>
+        body {
+            font-family: "MS PGothic", "MS Pゴシック", "ヒラギノ角ゴ Pro W3", sans-serif;
+            line-height: 1.6;
+        }
+
+        p {
+            margin-bottom: 1.5em;
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080">
+
+    <table border="0" cellpadding="10" width="700" align="center">
+        <tr>
+            <td valign="top">
+                <p align="right"><a href="column.html">目次へ戻る</a> ｜ <a href="index.html">トップへ戻る</a></p>
+
+                <h1>週刊東山通信 第4回</h1>
+                <h2>セル・スネーク</h2>
+                <p>投稿日：2026年3月4日 ｜ 執筆：せる</p>
+                <hr>
+
+                <p>　週刊東山通信も第4回を迎えた。これを書くにあたって他3人の文章を読み返してみたが、私にはほかのメンバーほどの文才はないし、ましてや彼らほど世界に向けて発信したい話題があるわけでもない。お目汚しご容赦願いたい。
+                </p>
+
+                <p>　何を題材にしようかなーと、ここ数日迷っていた。ふと日課のゲームをしようとして、「これやん」とビビっと来たので、今回は私の愛してやまないゲームについて紹介させてほしい。</p>
+
+                <p>　私は「メタルギア」シリーズの大ファンである。メタルギアというのは一言で言うと、「敵地に潜入して任務を行うアクションゲーム」である。「スネーク」というキャラクターはみんな聞いたことがあるのではないだろうか。世の中には銃をもって敵を撃ったりして競うゲームはごまんとあるが、極力敵を倒さずに、敵に見つからずに進めるステルスアクションのゲームはそう多くないだろう。中でもメタルギアはそんなステルスアクションというジャンルを確立したといってもいい、革新的なゲームであったのだ。
+                </p>
+
+                <p>　ではメタルギアの何がそんなに面白いのか。それはストーリーの深さである。冷戦時代から近未来までを舞台にした壮大な歴史の裏側を描きつつ、そこには常に「核抑止」「遺伝子」「情報統制」といった重厚なテーマが流れており、プレイを通じて我々は「正義とは何か」「意志を継ぐとは」など深く考察させられることになるのである。幼いころにプレイした時にはよくわからないまま純粋にステルスアクションを楽しみ、そこから成長し大人になったメタルギアキッズは、ふともう一度メタルギアを手に取り、あのころには理解しえなかった感動のストーリーを味わい、見事にこの作品のとりこになるのである。
+                </p>
+
+                <p>　メタルギアに興味を持ってくれたそこの君、「まずシリーズの中でどの作品からプレイすればいいの？」だって？いい質問だ。私は「MGS３」をおすすめしたい。ストーリーを時系列順に並べたとき、いちばん最初にくるのが３であるということもあるが、ファンの中には「まずMGS1だろ、何言ってんだ」と突っかかってくる厄介者もいるかもしれない。しかし私が３をおすすめするのは、単に時系列の問題ではない。それまでの固定カメラから、背面カメラによるTPSに変わった初めての作品なので、１や２と比べて圧倒的に操作性がよいのである。また、ストーリーも理解しやすく、「愛国者達」とかいう初見では意味の分からない概念も存在しない。しかも現在ではもとのMGS3も、リメイク版であるMGSΔ（デルタ）も両方switch、PC、PS5など多数のハードで手に取ることができる。メタルギアに触れてみたいという願いを叶えやすすぎる環境なのである。さらにさらに、8月には新たにMGS4やMGS
+                    PWのswitch、PC、PS5版が発売予定である。この機を逃していつメタルギアを始めるというのだ。</p>
+
+                <p>　以上、せるによる「メタルギア」の雑な紹介である。こんな文章でもメタルギアやってみたい！と思ってくれた方や、すでにメタルギアのファンの方、ぜひライブ等でお話ししましょう。</p>
+                <br><br>
+
+                <p>せる</p><br>
+
+                <hr>
+
+                <!-- コメント機能 -->
+                <div style="margin-top: 80px; margin-bottom: 30px;">
+                    <h3>💬 コメント</h3>
+                    <div id="comments-container" style="margin-bottom: 20px;"></div>
+
+                    <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background-color: #f9f9f9;">
+                        <h4 style="margin-top: 0;">コメントを投稿する</h4>
+                        <p style="font-size: 0.9em; color: #555; margin-top: 0;">
+                            ※お名前は自由に設定できます。コメントはちいかわ風に変換されます。</p>
+                        <div style="margin-bottom: 10px;">
+                            <label style="font-size: 0.9em;">お名前：</label><br>
+                            <input type="text" id="comment-name" maxlength="8"
+                                style="width: 100%; max-width: 300px; padding: 5px;">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="font-size: 0.9em;">コメント：</label><br>
+                            <textarea id="comment-text" rows="4"
+                                style="width: 100%; box-sizing: border-box; padding: 5px;"></textarea>
+                        </div>
+                        <button onclick="postComment()" style="padding: 8px 15px; cursor: pointer;">投稿する</button>
+                        <p id="comment-error" style="color: red; display: none; margin-top: 10px; font-size: 0.9em;">
+                        </p>
+                    </div>
+                </div>
+
+                <script>
+                    const pageKey = 'comments_' + window.location.pathname.split('/').pop().split('.')[0];
+                    const API_URL = 'https://script.google.com/macros/s/AKfycbxQtt3zOcm8sP8JTlBMGLv5qfRwfMIRDJz-jzhKUCKOFONhOt47t4WY7s3kxcUHGq-7/exec';
+                    const GEMINI_API_KEY = 'AIzaSyAg3jz9RYOC5M3r-r7zQddzxsKcBfm60QU';
+                    const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_API_KEY;
+
+                    // NGワードリスト（放送禁止用語・差別用語等）
+                    const NG_WORDS = [
+                        // 暴言・罵倒
+                        '死ね', '殺す', '殺してやる', 'クソ', '糞', 'うざい', 'きもい', 'キモい', 'キモイ',
+                        // 知的障害に関する差別語
+                        'ガイジ', '池沼', '知障', '知恵遅れ', '白痴', '低能', 'ちしょう',
+                        // 身体障害に関する差別語
+                        'かたわ', 'カタワ', 'びっこ', 'めくら', 'つんぼ', 'おし', 'どもり',
+                        'いざり', 'ちんば', 'せむし',
+                        // 精神障害に関する差別語
+                        'キチガイ', 'きちがい', '基地外', '気違い', '精薄',
+                        // 人種・民族差別語
+                        'ニガー', 'ニグロ', '土人',
+                        // 職業差別語
+                        '乞食', 'こじき', 'ルンペン',
+                        // 侮蔑語
+                        'バカ', 'アホ', '間抜け', 'マヌケ', 'ボケ', 'カス', 'ゴミ',
+                        'クズ', 'ブス', 'デブ', 'ハゲ', 'チビ',
+                        // 性的表現
+                        'セックス', 'オナニー', 'ちんこ', 'まんこ', 'おっぱい', 'レイプ', '強姧',
+                        // 反社会的表現
+                        '爆破', 'テロ', '自殺しろ', '首吊り',
+                        // ネットスラング系侮蔑
+                        '氏ね', 'タヒね', '4ね', 'シネ', 'くたばれ', 'ころす'
+                    ];
+
+                    // 削除トークンをlocalStorageで管理
+                    function getMyTokens() {
+                        try {
+                            return JSON.parse(localStorage.getItem('myCommentTokens') || '[]');
+                        } catch { return []; }
+                    }
+                    function saveToken(token) {
+                        const tokens = getMyTokens();
+                        tokens.push(token);
+                        localStorage.setItem('myCommentTokens', JSON.stringify(tokens));
+                    }
+                    function removeToken(token) {
+                        const tokens = getMyTokens().filter(t => t !== token);
+                        localStorage.setItem('myCommentTokens', JSON.stringify(tokens));
+                    }
+                    function generateToken() {
+                        return Math.random().toString(36).substring(2) + Date.now().toString(36);
+                    }
+
+                    async function transformToChiikawa(text) {
+                        const prompt = [
+                            "あなたはテキストを「ちいかわ」のキャラクター（主にハチワレ）風のセリフに自然に変換するAIです。",
+                            "",
+                            "【重要ルール】",
+                            "- 原作のちいかわの雰囲気を大切にし、過剰にならないこと。自然な会話調にすること。",
+                            "- 文末や文中に、以下の「ちいかわ構文」を適度に織り交ぜてください（全部使う必要はありません）：",
+                            "  ・「○○…ってコト！？」（状況を確認する時に使う、ハチワレの代表的な口癖）",
+                            "  ・「こんなんさァッッ 絶対○○じゃん」（興奮して断言する時）",
+                            "  ・「なんとかなれーッ！！」（ピンチや困った時のおまじない）",
+                            "  ・「心がふたつある～」（迷っている時）",
+                            "  ・「泣いちゃった」（感動や悲しい時）",
+                            "  ・倒置法（「○○なの！？△△！！」のように語順を入れ替える。例：「なっちゃったの！！？散切り頭！！！」）",
+                            "  ・「むり…」「イヤッ」「ヤダーッ」（拒否する時、ちいかわ風）",
+                            "  ・「ワァ…」「フゥ…」（感嘆）",
+                            "- 漢字は少なめにし、ひらがな・カタカナを多めに使ってください。",
+                            "- 「…」「！」「！？」「ッ」は使いますが、過剰に詰め込まないでください。",
+                            "- 元のメッセージの意味や内容は必ず保ってください。",
+                            "",
+                            "【変換例】",
+                            "入力：「このラーメン美味しかった」",
+                            "出力：「このラーメンさァ…絶対おいしいやつじゃん！！ むり…もう一杯たべたい…ってコト！？」",
+                            "",
+                            "入力：「明日テストだけどまだ勉強してない」",
+                            "出力：「まだやってないの！！？べんきょう！！ なんとかなれーッ！！」",
+                            "",
+                            "入力：「猫がかわいい」",
+                            "出力：「かわいすぎ…泣いちゃった…… こんなんさァッッ絶対てんしじゃん」",
+                            "",
+                            "出力は変換後のテキストのみです。",
+                            "--- 変換対象テキスト ---",
+                            text
+                        ].join("\n");
+
+                        try {
+                            const res = await fetch(GEMINI_URL, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    contents: [{ parts: [{ text: prompt }] }],
+                                    generationConfig: { temperature: 1.2 }
+                                })
+                            });
+
+                            if (!res.ok) {
+                                const errText = await res.text();
+                                console.error('Gemini API Error:', res.status, errText);
+                                return text;
+                            }
+
+                            const data = await res.json();
+                            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                                return data.candidates[0].content.parts[0].text;
+                            } else {
+                                console.error('Gemini API Unexpected Response:', data);
+                            }
+                        } catch (e) {
+                            console.error('Gemini API Fetch Error:', e);
+                        }
+                        return text;
+                    }
+
+                    async function loadComments() {
+                        const container = document.getElementById('comments-container');
+                        container.innerHTML = '<p style="color: #888; font-size: 0.9em;">読み込み中...</p>';
+                        const myTokens = getMyTokens();
+
+                        try {
+                            const response = await fetch(API_URL + '?pageId=' + pageKey);
+                            const comments = await response.json();
+
+                            container.innerHTML = '';
+                            if (!comments || comments.length === 0) {
+                                container.innerHTML = '<p style="color: #888; font-size: 0.9em;">まだコメントはありません。</p>';
+                                return;
+                            }
+
+                            comments.forEach(c => {
+                                const div = document.createElement('div');
+                                div.style.borderBottom = '1px solid #eee';
+                                div.style.padding = '10px 0';
+
+                                const header = document.createElement('div');
+                                header.innerHTML = `<strong style="font-size: 1em;">${escapeHtml(c.name)}</strong> <span style="font-size: 0.8em; color: #888; margin-left: 10px;">${escapeHtml(c.date)}</span>`;
+
+                                // 自分のコメントなら削除ボタンを表示
+                                if (c.deleteToken && myTokens.includes(c.deleteToken)) {
+                                    const delBtn = document.createElement('button');
+                                    delBtn.innerText = '削除';
+                                    delBtn.style.cssText = 'margin-left: 10px; font-size: 0.75em; padding: 2px 8px; cursor: pointer; color: #c00; border: 1px solid #c00; background: #fff; border-radius: 3px;';
+                                    delBtn.onclick = () => deleteComment(c.row, c.deleteToken);
+                                    header.appendChild(delBtn);
+                                }
+
+                                const text = document.createElement('p');
+                                text.style.margin = '5px 0 0 0';
+                                text.style.fontSize = '0.95em';
+                                text.innerHTML = escapeHtml(c.text).replace(/\n/g, '<br>');
+
+                                div.appendChild(header);
+                                div.appendChild(text);
+                                container.appendChild(div);
+                            });
+                        } catch (e) {
+                            container.innerHTML = '<p style="color: #ff0000; font-size: 0.9em;">コメントの読み込みに失敗しました。</p>';
+                        }
+                    }
+
+                    async function deleteComment(row, deleteToken) {
+                        if (!confirm('このコメントを削除しますか？')) return;
+
+                        try {
+                            const response = await fetch(API_URL, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'text/plain' },
+                                body: JSON.stringify({
+                                    action: 'delete',
+                                    row: row,
+                                    deleteToken: deleteToken,
+                                    password: 'QA63VEUK'
+                                })
+                            });
+                            const result = await response.json();
+                            if (result.success) {
+                                removeToken(deleteToken);
+                                loadComments();
+                            } else {
+                                alert(result.message || '削除に失敗しました。');
+                            }
+                        } catch (e) {
+                            alert('通信エラーが発生しました。');
+                        }
+                    }
+
+                    async function postComment() {
+                        const nameInput = document.getElementById('comment-name');
+                        const textInput = document.getElementById('comment-text');
+                        const errorMsg = document.getElementById('comment-error');
+                        const submitBtn = document.querySelector('button[onclick="postComment()"]');
+
+                        const name = nameInput.value.trim() || '名無し';
+                        const text = textInput.value.trim();
+
+                        if (!text) {
+                            errorMsg.innerText = 'コメントを入力してください。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        // 名前の文字種チェック（ひらがな・アルファベットのみ）
+                        if (name !== '名無し' && !/^[ぁ-んー a-zA-Z]+$/.test(name)) {
+                            errorMsg.innerText = 'お名前はひらがなまたはアルファベットで入力してください。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        // NGワードチェック（名前）
+                        if (NG_WORDS.some(word => name.includes(word))) {
+                            errorMsg.innerText = 'お名前に不適切な言葉が含まれています。変更してください。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        // NGワードチェック（コメント本文）
+                        if (NG_WORDS.some(word => text.includes(word))) {
+                            errorMsg.innerText = 'コメントに不適切な言葉が含まれています。修正してください。';
+                            errorMsg.style.display = 'block';
+                            return;
+                        }
+
+                        errorMsg.style.display = 'none';
+                        submitBtn.disabled = true;
+                        submitBtn.innerText = '投稿中...';
+
+                        try {
+                            // フロントエンドでGemini APIを呼び出してちいかわ変換
+                            const transformedText = await transformToChiikawa(text);
+
+                            // 削除用トークンを生成
+                            const deleteToken = generateToken();
+
+                            // 変換後のテキストをGASに送信
+                            const response = await fetch(API_URL, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'text/plain'
+                                },
+                                body: JSON.stringify({
+                                    pageId: pageKey,
+                                    name: name,
+                                    text: transformedText,
+                                    deleteToken: deleteToken,
+                                    password: 'QA63VEUK'
+                                })
+                            });
+
+                            const result = await response.json();
+
+                            if (result.success) {
+                                saveToken(deleteToken);
+                                nameInput.value = '';
+                                textInput.value = '';
+                                loadComments();
+                            } else {
+                                errorMsg.innerText = result.message || '投稿に失敗しました。';
+                                errorMsg.style.display = 'block';
+                            }
+                        } catch (e) {
+                            errorMsg.innerText = '通信エラーが発生しました。';
+                            errorMsg.style.display = 'block';
+                        } finally {
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = '投稿する';
+                        }
+                    }
+
+                    function escapeHtml(str) {
+                        if (!str) return '';
+                        return String(str).replace(/[&<>'"]/g, tag => ({
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            "'": '&#39;',
+                            '"': '&quot;'
+                        }[tag] || tag));
+                    }
+
+                    document.addEventListener('DOMContentLoaded', loadComments);
+                </script>
+                <!-- コメント機能 ここまで -->
+
+                <hr>
+                <p align="center"><a href="column.html">目次へ戻る</a> ｜ <a href="index.html">トップへ戻る</a></p>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
