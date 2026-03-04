@@ -1,0 +1,14 @@
+{
+    "contents": [
+        {
+            "parts": [
+                {
+                    "text": "hello"
+                }
+            ]
+        }
+    ],
+    "generationConfig": {
+        "temperature": 1.2
+    }
+}
