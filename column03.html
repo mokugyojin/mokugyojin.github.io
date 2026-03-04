@@ -178,12 +178,21 @@
                                     generationConfig: { temperature: 1.2 }
                                 })
                             });
+
+                            if (!res.ok) {
+                                const errText = await res.text();
+                                console.error('Gemini API Error:', res.status, errText);
+                                return text;
+                            }
+
                             const data = await res.json();
                             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
                                 return data.candidates[0].content.parts[0].text;
+                            } else {
+                                console.error('Gemini API Unexpected Response:', data);
                             }
                         } catch (e) {
-                            // 変換失敗時は元テキストを返す
+                            console.error('Gemini API Fetch Error:', e);
                         }
                         return text;
                     }
