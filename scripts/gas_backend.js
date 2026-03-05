@@ -6,7 +6,75 @@
 //   値: （新しいAPIキー）
 // =============================================
 
+// ★★★ 初回のみ: この関数をGASエディタで手動実行して権限を承認してください ★★★
+function grantPermissions() {
+  var apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+  if (!apiKey) { Logger.log('GEMINI_API_KEY が設定されていません'); return; }
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + apiKey;
+  var payload = JSON.stringify({ contents: [{ parts: [{ text: 'こんにちは' }] }] });
+  var response = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', payload: payload, muteHttpExceptions: true });
+  Logger.log('HTTP Status: ' + response.getResponseCode());
+  var json = JSON.parse(response.getContentText());
+  if (json.candidates) {
+    Logger.log('変換成功: ' + json.candidates[0].content.parts[0].text);
+  } else {
+    Logger.log('エラー: ' + response.getContentText().slice(0, 200));
+  }
+}
+
 function doGet(e) {
+  // デバッグ用：?test=1 でちいかわ変換テスト
+  if (e.parameter.test === '1') {
+    var testText = e.parameter.text || 'hello';
+    var apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+    var debugInfo = {
+      input: testText,
+      apiKeySet: !!apiKey,
+      apiKeyPrefix: apiKey ? apiKey.slice(0, 10) + '...' : 'NOT SET'
+    };
+
+    try {
+      var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + apiKey;
+      var payload = JSON.stringify({
+        contents: [{ parts: [{ text: testText }] }]
+      });
+      var options = {
+        method: 'post',
+        contentType: 'application/json',
+        payload: payload,
+        muteHttpExceptions: true
+      };
+      var response = UrlFetchApp.fetch(url, options);
+      var code = response.getResponseCode();
+      var body = response.getContentText();
+      debugInfo.httpStatus = code;
+      if (code === 200) {
+        var json = JSON.parse(body);
+        if (json.candidates && json.candidates[0] && json.candidates[0].content) {
+          var parts = json.candidates[0].content.parts;
+          for (var i = 0; i < parts.length; i++) {
+            if (!parts[i].thought && parts[i].text) {
+              debugInfo.output = parts[i].text.trim();
+              break;
+            }
+          }
+          if (!debugInfo.output) debugInfo.output = '(parts取得失敗: thought部分のみ)';
+        } else {
+          debugInfo.output = '(candidatesなし)';
+          debugInfo.responseBody = body.slice(0, 500);
+        }
+      } else {
+        debugInfo.output = '(API Error ' + code + ')';
+        debugInfo.responseBody = body.slice(0, 500);
+      }
+    } catch (err) {
+      debugInfo.output = 'EXCEPTION: ' + err.toString();
+    }
+
+    return ContentService.createTextOutput(JSON.stringify(debugInfo))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = sheet.getDataRange().getValues();
   var pageId = e.parameter.pageId;
@@ -127,7 +195,7 @@ function transformToChiikawa(text) {
   ].join("\n");
 
   try {
-    var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey;
+    var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + apiKey;
     var payload = JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { temperature: 1.2 }
