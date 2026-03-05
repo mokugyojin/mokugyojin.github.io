@@ -108,8 +108,6 @@
                 <script>
                     const pageKey = 'comments_' + window.location.pathname.split('/').pop().split('.')[0];
                     const API_URL = 'https://script.google.com/macros/s/AKfycbxQtt3zOcm8sP8JTlBMGLv5qfRwfMIRDJz-jzhKUCKOFONhOt47t4WY7s3kxcUHGq-7/exec';
-                    const GEMINI_API_KEY = 'AIzaSyCnC4j670-2XHqMhU2wkuN5wdgayrm-i9c';
-                    const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_API_KEY;
 
                     // NGワードリスト（放送禁止用語・差別用語等）
                     const NG_WORDS = [
@@ -156,67 +154,6 @@
                         return Math.random().toString(36).substring(2) + Date.now().toString(36);
                     }
 
-                    async function transformToChiikawa(text) {
-                        const prompt = [
-                            "あなたはテキストを「ちいかわ」のキャラクター（主にハチワレ）風のセリフに自然に変換するAIです。",
-                            "",
-                            "【重要ルール】",
-                            "- 原作のちいかわの雰囲気を大切にし、過剰にならないこと。自然な会話調にすること。",
-                            "- 文末や文中に、以下の「ちいかわ構文」を適度に織り交ぜてください（全部使う必要はありません）：",
-                            "  ・「○○…ってコト！？」（状況を確認する時に使う、ハチワレの代表的な口癖）",
-                            "  ・「こんなんさァッッ 絶対○○じゃん」（興奮して断言する時）",
-                            "  ・「なんとかなれーッ！！」（ピンチや困った時のおまじない）",
-                            "  ・「心がふたつある～」（迷っている時）",
-                            "  ・「泣いちゃった」（感動や悲しい時）",
-                            "  ・倒置法（「○○なの！？△△！！」のように語順を入れ替える。例：「なっちゃったの！！？散切り頭！！！」）",
-                            "  ・「むり…」「イヤッ」「ヤダーッ」（拒否する時、ちいかわ風）",
-                            "  ・「ワァ…」「フゥ…」（感嘆）",
-                            "- 漢字は少なめにし、ひらがな・カタカナを多めに使ってください。",
-                            "- 「…」「！」「！？」「ッ」は使いますが、過剰に詰め込まないでください。",
-                            "- 元のメッセージの意味や内容は必ず保ってください。",
-                            "",
-                            "【変換例】",
-                            "入力：「このラーメン美味しかった」",
-                            "出力：「このラーメンさァ…絶対おいしいやつじゃん！！ むり…もう一杯たべたい…ってコト！？」",
-                            "",
-                            "入力：「明日テストだけどまだ勉強してない」",
-                            "出力：「まだやってないの！！？べんきょう！！ なんとかなれーッ！！」",
-                            "",
-                            "入力：「猫がかわいい」",
-                            "出力：「かわいすぎ…泣いちゃった…… こんなんさァッッ絶対てんしじゃん」",
-                            "",
-                            "出力は変換後のテキストのみです。",
-                            "--- 変換対象テキスト ---",
-                            text
-                        ].join("\n");
-
-                        try {
-                            const res = await fetch(GEMINI_URL, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    contents: [{ parts: [{ text: prompt }] }],
-                                    generationConfig: { temperature: 1.2 }
-                                })
-                            });
-
-                            if (!res.ok) {
-                                const errText = await res.text();
-                                console.error('Gemini API Error:', res.status, errText);
-                                return text;
-                            }
-
-                            const data = await res.json();
-                            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                                return data.candidates[0].content.parts[0].text;
-                            } else {
-                                console.error('Gemini API Unexpected Response:', data);
-                            }
-                        } catch (e) {
-                            console.error('Gemini API Fetch Error:', e);
-                        }
-                        return text;
-                    }
 
                     async function loadComments() {
                         const container = document.getElementById('comments-container');
@@ -332,13 +269,10 @@
                         submitBtn.innerText = '投稿中...';
 
                         try {
-                            // フロントエンドでGemini APIを呼び出してちいかわ変換
-                            const transformedText = await transformToChiikawa(text);
-
-                            // 削除用トークンを生成
+                            // 削除用トークンを生成（ちいかわ変換はGAS側で実行）
                             const deleteToken = generateToken();
 
-                            // 変換後のテキストをGASに送信
+                            // テキストをGASに送信（GAS側でちいかわ変換を実行）
                             const response = await fetch(API_URL, {
                                 method: 'POST',
                                 headers: {
@@ -347,7 +281,7 @@
                                 body: JSON.stringify({
                                     pageId: pageKey,
                                     name: name,
-                                    text: transformedText,
+                                    text: text,
                                     deleteToken: deleteToken,
                                     password: 'QA63VEUK'
                                 })
