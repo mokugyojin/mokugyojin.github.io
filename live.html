@@ -9,6 +9,24 @@
         body {
             font-family: "MS PGothic", "MS Pゴシック", "ヒラギノ角ゴ Pro W3", sans-serif;
         }
+    
+        /* レスポンシブ対応 (スマホ向け) */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        @media screen and (max-width: 768px) {
+            table, tbody, tr, td {
+                display: block;
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+            td[width="250"], td[style*="width: 250px"] {
+                border-bottom: 2px solid #ddd;
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 
