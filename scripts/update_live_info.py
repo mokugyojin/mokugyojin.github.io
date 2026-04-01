@@ -73,8 +73,14 @@ def generate_live_list_html(lives):
         
         display_date = event_date.strftime('%Y/%m/%d')
 
-        # Build image HTML if image exists (smaller size)
-        img_html = f'<img src="{image}" alt="{title}" style="max-width: 300px; width: 100%; border-radius: 5px; margin-bottom: 10px;">' if image else ''
+        # Build image HTML - support both single string and array of images
+        img_html = ''
+        if isinstance(image, list):
+            for img in image:
+                if img:
+                    img_html += f'<img src="{img}" alt="{title}" style="max-width: 300px; width: 100%; border-radius: 5px; margin-bottom: 10px;">\n            '
+        elif image:
+            img_html = f'<img src="{image}" alt="{title}" style="max-width: 300px; width: 100%; border-radius: 5px; margin-bottom: 10px;">'
 
         # Create a simple card-like HTML structure
         live_card = f"""
