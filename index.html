@@ -10,22 +10,132 @@
         body {
             font-family: "MS PGothic", "MS Pゴシック", "ヒラギノ角ゴ Pro W3", sans-serif;
         }
-    
+
         /* レスポンシブ対応 (スマホ向け) */
         img {
             max-width: 100%;
             height: auto;
         }
+
         @media screen and (max-width: 768px) {
-            table, tbody, tr, td {
+
+            table,
+            tbody,
+            tr,
+            td {
                 display: block;
                 width: 100% !important;
                 box-sizing: border-box;
             }
-            td[width="250"], td[style*="width: 250px"] {
+
+            td[width="250"],
+            td[style*="width: 250px"] {
                 border-bottom: 2px solid #ddd;
                 padding-bottom: 20px;
                 margin-bottom: 20px;
+            }
+        }
+
+        /* --- SNSリンクエリア --- */
+        .hero-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .hero-image {
+            flex-shrink: 0;
+        }
+
+        .hero-image img {
+            width: 280px;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+
+        .sns-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-content: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .sns-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            padding: 10px;
+        }
+
+        .sns-link:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+
+        .sns-link:active {
+            transform: scale(0.95);
+        }
+
+        .sns-link svg,
+        .sns-link img {
+            width: 64px;
+            height: 64px;
+        }
+
+        /* チケット取り置きフォームボタン */
+        .ticket-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 12px 10px;
+            color: #333;
+            font-size: 0.95em;
+            font-weight: bold;
+            line-height: 1.4;
+            text-align: center;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .ticket-link:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .ticket-link:active {
+            transform: scale(0.95);
+        }
+
+        /* スマホ向け調整 */
+        @media screen and (max-width: 600px) {
+            .hero-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-image img {
+                width: 250px;
+            }
+
+            .sns-grid {
+                width: 100%;
+                max-width: 300px;
+                gap: 15px;
+            }
+
+            .sns-link svg,
+            .sns-link img {
+                width: 56px;
+                height: 56px;
             }
         }
     </style>
@@ -57,9 +167,54 @@
 
                 <p>Thank you so much for visiting the "MokuGyoJin official website". We created this site as a place to
                     greet everyone we're meeting for the first time, as well as those who always support us. Please feel
-                    free to browse.</p><br>
+                    free to browse.</p>
 
-                <img src="木魚人アー写.jpg" alt="木魚人メインビジュアル" width="300" border="1" style="max-width: 100%; height: auto;">
+                <!-- アー写 + SNSリンク -->
+                <div class="hero-section">
+                    <div class="hero-image">
+                        <img src="木魚人アー写.jpg" alt="木魚人メインビジュアル">
+                    </div>
+
+                    <div class="sns-grid">
+                        <!-- X (Twitter) -->
+                        <a href="https://x.com/mokugyojin" target="_blank" class="sns-link" id="link-x" title="X (Twitter)">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="#000"/>
+                            </svg>
+                        </a>
+
+                        <!-- YouTube -->
+                        <a href="https://www.youtube.com/@mokugyojin" target="_blank" class="sns-link" id="link-youtube" title="YouTube">
+                            <svg viewBox="0 0 72 50" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M70.5 7.8C69.7 4.7 67.3 2.3 64.2 1.5 58.6 0 36 0 36 0S13.4 0 7.8 1.5C4.7 2.3 2.3 4.7 1.5 7.8 0 13.4 0 25 0 25s0 11.6 1.5 17.2c.8 3.1 3.2 5.5 6.3 6.3C13.4 50 36 50 36 50s22.6 0 28.2-1.5c3.1-.8 5.5-3.2 6.3-6.3C72 36.6 72 25 72 25s0-11.6-1.5-17.2z" fill="#FF0000"/>
+                                <polygon points="29,36 47,25 29,14" fill="#FFFFFF"/>
+                            </svg>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/mokugyojin/" target="_blank" class="sns-link" id="link-instagram" title="Instagram">
+                            <svg viewBox="0 0 132 132" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#feda75"/>
+                                        <stop offset="20%" style="stop-color:#fa7e1e"/>
+                                        <stop offset="45%" style="stop-color:#d62976"/>
+                                        <stop offset="70%" style="stop-color:#962fbf"/>
+                                        <stop offset="100%" style="stop-color:#4f5bd5"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect x="4" y="4" width="124" height="124" rx="30" ry="30" fill="none" stroke="url(#ig-grad)" stroke-width="8"/>
+                                <circle cx="66" cy="66" r="28" fill="none" stroke="url(#ig-grad)" stroke-width="8"/>
+                                <circle cx="100" cy="32" r="8" fill="url(#ig-grad)"/>
+                            </svg>
+                        </a>
+
+                        <!-- チケット取り置きフォーム -->
+                        <a href="https://forms.gle/bvaQcmX2a7RpN2PWA" target="_blank" class="ticket-link" id="link-ticket">
+                            チケット取り置き<br>フォーム
+                        </a>
+                    </div>
+                </div>
 
                 <hr>
             </td>
