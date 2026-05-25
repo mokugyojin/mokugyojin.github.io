@@ -81,13 +81,14 @@
   },
   {
     "date": "2026-06-19",
-    "title": "詳細は後日公開",
-    "open_start": "詳細は後日公開",
-    "ticket": "詳細は後日公開",
-    "place": "名古屋市（詳細は後日公開）",
-    "access": "",
-    "act": "",
-    "image": ""
+    "title": "stiffslack presents 相声ヤンユアン 活動休止ライブ",
+    "open_start": "18:30 / 19:00",
+    "ticket": "¥2,400 (+1drink ¥600) / U22・学生 ¥1,900 (+1drink ¥600)",
+    "place": "名古屋市・清水stiffslack VENUE",
+    "access": "名鉄瀬戸線 清水駅 徒歩1分",
+    "act": "w/ 相声ヤンユアン, 与太話, THE TAROS",
+    "comment": "4人体制ラストライブ！このライブを最後に、Key.有５人体制メインになります！",
+    "image": "live_20260619.jpg"
   },
   {
     "date": "2026-06-23",
@@ -121,12 +122,13 @@
   },
   {
     "date": "2026-08-23",
-    "title": "詳細は後日公開",
-    "open_start": "詳細は後日公開",
-    "ticket": "詳細は後日公開",
-    "place": "名古屋市（詳細は後日公開）",
-    "access": "",
-    "act": "",
-    "image": ""
+    "title": "カチカチ・ポクポク 2MAN SHOW（昼）",
+    "open_start": "12:30 / 13:00",
+    "ticket": "前売 ¥1,900 / 当日 ¥2,400 (+1drink ¥600)",
+    "place": "名古屋市・鶴舞DAYTRIP",
+    "access": "JR・地下鉄 鶴舞駅 徒歩5分",
+    "act": "w/ ぜんまい(from 関西)",
+    "comment": "45分の長尺ライブ！ぜひお越しください！",
+    "image": "live_20260823.jpg"
   }
 ]
